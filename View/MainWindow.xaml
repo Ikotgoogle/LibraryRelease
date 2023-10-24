@@ -1,0 +1,134 @@
+﻿<Window x:Class="LibraryHome.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LibraryHome"
+        mc:Ignorable="d"
+        Title="MainWindow" 
+        Height="520" Width="850"
+        MinHeight="475" MinWidth="675">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.Row="0" Grid.Column="0"
+                    Grid.RowSpan="3" Grid.ColumnSpan="3">
+            <TabItem Header="Обзор">
+                <Grid  Margin="2">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.55*"/>
+                        <ColumnDefinition Width="1.8*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Grid.RowSpan="2" Margin="2">
+                        <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold">Читатель</Label>
+                        <TextBox x:Name="InputPeopleName" Text="{Binding FindingPeopleText, 
+                            UpdateSourceTrigger=PropertyChanged}" Margin="0,2,0,5" DockPanel.Dock="Top"/>
+                        <ListView x:Name="PeopleListView" FontSize="12" DockPanel.Dock="Top"
+                                  ItemsSource="{Binding FindingPeople}" SelectedItem="{Binding SelectedPeople}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <GridViewColumn Header="Почта" DisplayMemberBinding="{Binding Email, UpdateSourceTrigger=PropertyChanged}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </DockPanel>
+
+                    <DockPanel Grid.Column="1" Grid.RowSpan="2" Margin="2">
+                        <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold">Книги читателя</Label>
+                        <ListView x:Name="InfoListView" FontSize="12" 
+                                  ItemsSource="{Binding PeoplesBooks}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Article, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <GridViewColumn Header="Назание книги" DisplayMemberBinding="{Binding BookName, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <GridViewColumn Header="Год написания книги" DisplayMemberBinding="{Binding Year, UpdateSourceTrigger=PropertyChanged}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </DockPanel>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Выдача/возврат">
+                <Grid  Margin="2">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.6*"/>
+                        <ColumnDefinition Width="1.8*"/>
+                        <ColumnDefinition Width="1.8*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <DockPanel Grid.Column="0" Grid.RowSpan="2" Margin="2">
+                        <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold">Читатель</Label>
+                        <TextBox Name="InputReaderText" DockPanel.Dock="Top" Margin="0,2,0,5" 
+                            Text="{Binding FindingReaderText, UpdateSourceTrigger=PropertyChanged}"/>
+                        <ListView x:Name="AllListView" FontSize="12"
+                                    ItemsSource="{Binding FindingReaders}" SelectedItem="{Binding SelectedReader}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <GridViewColumn Header="Почта" DisplayMemberBinding="{Binding Email, UpdateSourceTrigger=PropertyChanged}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </DockPanel>
+
+                    <DockPanel Grid.Column="1" Grid.RowSpan="2" Margin="2">
+                        <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold">Книги читателя</Label>
+                        <ListView x:Name="OwnerListView" FontSize="12"
+                            ItemsSource="{Binding ReadersBooks}" SelectedItem="{Binding SelectedReadersBook}" >
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Артикул" DisplayMemberBinding="{Binding Article, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <GridViewColumn Header="Название" DisplayMemberBinding="{Binding BookName, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <GridViewColumn Header="Год" DisplayMemberBinding="{Binding Year, UpdateSourceTrigger=PropertyChanged}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </DockPanel>
+
+                    <DockPanel Grid.Column="2" Grid.RowSpan="2">
+                        <Label DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold">Книги</Label>
+                        <TextBox Name="InputBookName" DockPanel.Dock="Top" Margin="0,2,0,5"
+                                Text="{Binding FindingBookText, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button x:Name="PassBook" Content="Выдать" FontSize="16" Width="100" Height="25" DockPanel.Dock="Bottom" Command="{Binding PassCommand}"/>
+                        <Button x:Name="GetBackBook" Content="Забрать" FontSize="16" Width="100" Height="25" DockPanel.Dock="Bottom" Command="{Binding GetBackCommand}"/>
+                        <ListView Name="BookListView" FontSize="12" DockPanel.Dock="Top" Height="auto" 
+                                    ItemsSource="{Binding FindingBooks}" SelectedItem="{Binding SelectedBook}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Article, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <GridViewColumn Header="Название" DisplayMemberBinding="{Binding BookName , UpdateSourceTrigger=PropertyChanged}"/>
+                                    <GridViewColumn Header="Год" DisplayMemberBinding="{Binding Year, UpdateSourceTrigger=PropertyChanged}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </DockPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
